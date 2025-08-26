@@ -71,9 +71,8 @@ Coloring vectors are allowed to be supplied to the Jacobian routines, and these 
 the directional derivatives for constructing the Jacobian. For example, an accurate
 NxN tridiagonal Jacobian can be computed in just 4 `f` calls by using
 `colorvec=repeat(1:3,N÷3)`. For information on automatically generating coloring
-vectors of sparse matrices, see [SparseDiffTools.jl](https://github.com/JuliaDiff/SparseDiffTools.jl).
-
-Hessian coloring support is coming soon!
+vectors of sparse matrices, see [SparseMatrixColorings.jl](https://github.com/gdalle/SparseMatrixColorings.jl) and 
+the now deprecated [SparseDiffTools.jl](https://github.com/JuliaDiff/SparseDiffTools.jl).
 
 ## Contributing
 
