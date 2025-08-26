@@ -14,7 +14,7 @@ Jacobians support the following function signatures:
 FiniteDiff.jl provides efficient sparse Jacobian computation using graph coloring:
 
 - Pass a `colorvec` of matrix colors to enable column compression
-- Provide `sparsity` as a sparse or structured matrix (`Tridiagonal`, `Banded`, etc.)
+- Provide `sparsity` as a sparse (`SparseMatrixCSC`) or structured matrix (`Tridiagonal`, `Banded`, etc.)
 - Supports automatic sparsity pattern detection via ArrayInterfaceCore.jl
 - Results are automatically decompressed unless `sparsity=nothing`
 

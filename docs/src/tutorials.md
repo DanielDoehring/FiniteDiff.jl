@@ -100,23 +100,29 @@ etc. all work.
 
 Now let's exploit sparsity. If we knew the sparsity pattern we could write it
 down analytically as a sparse matrix, but let's assume we don't. Thus we can
-use [SparsityDetection.jl](https://github.com/JuliaDiffEq/SparsityDetection.jl)
+use [SparseConnectivityTracer.jl](https://github.com/adrhill/SparseConnectivityTracer.jl)
 to automatically get the sparsity pattern of the Jacobian as a sparse matrix:
 
 ```julia
-using SparsityDetection, SparseArrays
+using SparseConnectivityTracer, SparseArrays
 in = rand(10)
 out = similar(in)
-sparsity_pattern = sparsity!(f,out,in)
+
+detector = TracerSparsityDetector()
+sparsity_pattern = jacobian_sparsity(f,out,in,detector)
+
 sparsejac = Float64.(sparse(sparsity_pattern))
 ```
 
-Then we can use [SparseDiffTools.jl](https://github.com/JuliaDiffEq/SparseDiffTools.jl)
+Then we can use [SparseMatrixColorings.jl](https://github.com/gdalle/SparseMatrixColorings.jl)
 to get the color vector:
 
 ```julia
-using SparseDiffTools
-colors = matrix_colors(sparsejac)
+using SparseMatrixColorings
+coloring_prob = ColoringProblem(; structure = :nonsymmetric, partition = :column)
+coloring_alg = GreedyColoringAlgorithm(; decompression = :direct)
+coloring_result = coloring(sparsejac, coloring_prob, coloring_alg)
+colors = column_colors(coloring_result)
 ```
 
 Now we can do sparse differentiation by passing the color vector and the sparsity
